@@ -10,6 +10,9 @@ KERNEL_PATH := $(DEVICE_PATH)-kernel
 # Inherit from sm8475-common
 include device/lenovo/sm8475-common/BoardConfigCommon.mk
 
+# Assert
+TARGET_OTA_ASSERT_DEVICE := asphalt_prc,asphalt_nec,TB320FC
+
 # Dtb/o
 BOARD_PREBUILT_DTBOIMAGE := $(KERNEL_PATH)/dtbo.img
 BOARD_PREBUILT_DTBIMAGE_DIR := $(KERNEL_PATH)/dtb
