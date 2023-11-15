@@ -1,5 +1,6 @@
 /*
  * Copyright 2017 The Android Open Source Project
+ * Copyright 2023 The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -132,7 +133,7 @@ int main(void) {
     ALOGI("Starting polling loop");
 
     // Polling loop
-    while (ALooper_pollAll(-1, NULL, NULL, NULL) == 0) {
+    while (ALooper_pollOnce(-1, NULL, NULL, NULL) == 0) {
         int eventCount = 0;
         ASensorEvent sensorEvent;
         while (ASensorEventQueue_getEvents(eventQueue, &sensorEvent, 1) > 0) {
