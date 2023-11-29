@@ -50,6 +50,12 @@ blob_fixups: blob_fixups_user_type = {
             'android.hardware.vibrator-V2-ndk_platform.so',
             'android.hardware.vibrator-V2-ndk.so',
         ),
+    (
+        'vendor/bin/hw/dolbycodec2',
+        'vendor/bin/hw/vendor.dolby.hardware.dms@2.0-service',
+        'vendor/bin/hw/vendor.dolby.media.c2@1.0-service',
+    ): blob_fixup()
+        .add_needed('libstagefright_foundation-v33.so'),
 }
 
 module = ExtractUtilsModule(
