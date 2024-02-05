@@ -1,4 +1,5 @@
 # Bluetooth
+bluetooth.device.default_name=Legion Tab Y700
 persist.vendor.bluetooth.modem_nv_support=true
 persist.vendor.service.bdroid.soc.alwayson=true
 
