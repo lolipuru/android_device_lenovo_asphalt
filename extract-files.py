@@ -20,6 +20,7 @@ from extract_utils.main import (
 )
 
 namespace_imports = [
+    'device/lenovo/asphalt',
     'device/lenovo/sm8475-common',
     'hardware/qcom-caf/sm8450',
     'vendor/qcom/opensource/commonsys-intf/display',
@@ -56,6 +57,11 @@ blob_fixups: blob_fixups_user_type = {
         'vendor/bin/hw/vendor.dolby.media.c2@1.0-service',
     ): blob_fixup()
         .add_needed('libstagefright_foundation-v33.so'),
+    (
+        'vendor/lib/c2.dolby.client.so',
+        'vendor/lib64/c2.dolby.client.so',
+    ): blob_fixup()
+        .add_needed('dolbycodec_shim.so'),
 }
 
 module = ExtractUtilsModule(
