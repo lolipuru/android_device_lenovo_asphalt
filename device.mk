@@ -26,6 +26,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/init/init.class_main.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.class_main.sh \
     $(LOCAL_PATH)/init/init.asphalt.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.asphalt.rc
 
+# Parts
+PRODUCT_PACKAGES += \
+    LenovoParts
+
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH)

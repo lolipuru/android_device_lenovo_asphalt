@@ -37,5 +37,8 @@ PRODUCT_COPY_FILES += \
 # Properties
 TARGET_VENDOR_PROP += $(DEVICE_PATH)/configs/properties/vendor.prop
 
+# SEPolicy
+SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
+
 # Inherit from the proprietary version
 include vendor/lenovo/asphalt/BoardConfigVendor.mk
