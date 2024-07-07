@@ -33,6 +33,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     ApertureResAsphalt \
     FrameworkResAsphalt \
+    SettingsOverlayAsphalt \
     WifiResTargetAsphalt
 
 # Parts
