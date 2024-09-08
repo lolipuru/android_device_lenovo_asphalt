@@ -13,6 +13,9 @@ include device/lenovo/sm8475-common/BoardConfigCommon.mk
 # Assert
 TARGET_OTA_ASSERT_DEVICE := asphalt_prc,asphalt_nec,TB320FC
 
+# Audio
+TARGET_PROVIDES_AUDIO_HAL ?= true
+
 # Dtb/o
 BOARD_PREBUILT_DTBOIMAGE := $(KERNEL_PATH)/dtbo.img
 BOARD_PREBUILT_DTBIMAGE_DIR := $(KERNEL_PATH)/dtb
