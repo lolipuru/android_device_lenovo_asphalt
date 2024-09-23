@@ -154,9 +154,9 @@
                 <priority>1</priority>
                 <sidetone_mode>HW</sidetone_mode>
                 <bit_width>16</bit_width>
+                <channels>2</channels>
+                <snd_device_name>handset-dmic-endfire</snd_device_name>
                 <custom-config key="dual-mic">
-                    <channels>2</channels>
-                    <snd_device_name>handset-dmic-endfire</snd_device_name>
                 </custom-config>
                 <custom-config key="quad-mic">
                     <channels>4</channels>
@@ -216,9 +216,9 @@
                 <priority>1</priority>
                 <sidetone_mode>OFF</sidetone_mode>
                 <bit_width>16</bit_width>
+                <channels>2</channels>
+                <snd_device_name>speaker-dmic-endfire</snd_device_name>
                 <custom-config key="dual-mic">
-                    <channels>2</channels>
-                    <snd_device_name>speaker-dmic-endfire</snd_device_name>
                 </custom-config>
                 <custom-config key="quad-mic">
                     <channels>4</channels>
