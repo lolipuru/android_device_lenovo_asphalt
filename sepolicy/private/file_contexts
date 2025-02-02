@@ -1,0 +1,2 @@
+# Folio daemon
+/system_ext/bin/folio-daemon    u:object_r:folio_daemon_exec:s0
