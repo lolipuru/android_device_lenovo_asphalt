@@ -1,6 +1,6 @@
 /*
  * Copyright 2017 The Android Open Source Project
- * Copyright 2023 The LineageOS Project
+ * Copyright 2023-2025 The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@
 #include <cutils/log.h>
 
 // Hall-effect sensor type
-#define SENSOR_TYPE 33171016
+#define SENSOR_TYPE 33171002
 
 #define RETRY_LIMIT     120
 #define RETRY_PERIOD    30          // 30 seconds
