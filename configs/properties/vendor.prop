@@ -1,0 +1,26 @@
+# Bluetooth
+persist.vendor.bluetooth.modem_nv_support=true
+persist.vendor.service.bdroid.soc.alwayson=true
+
+# Display
+vendor.display.vds_allow_hwc=1
+debug.sf.auto_latch_unsignaled=1
+debug.sf.disable_backpressure=0
+debug.sf.use_phase_offsets_as_durations=1
+debug.sf.late.app.duration=13666666
+debug.sf.early.app.duration=13666666
+debug.sf.earlyGl.app.duration=13666666
+debug.sf.early.sf.duration=10500000
+debug.sf.earlyGl.sf.duration=10500000
+debug.sf.late.sf.duration=10500000
+vendor.display.idle_time=0
+debug.sf.enable_hwc_vds=0
+
+# Dolby
+ro.vendor.dolby.dax.version=DAX3_3.13.0.9_r1
+
+# DRM
+drm.service.enabled=true
+
+# Perf
+vendor.power.pasr.enabled=false
