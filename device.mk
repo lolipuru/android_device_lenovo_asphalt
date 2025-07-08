@@ -12,6 +12,9 @@ $(call inherit-product, device/lenovo/sm8475-common/common.mk)
 $(call inherit-product, vendor/lenovo/asphalt/asphalt-vendor.mk)
 
 # Audio
+PRODUCT_PACKAGES += \
+    audio.primary.taro:64
+
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio/audio_effects.conf:$(TARGET_COPY_OUT_VENDOR)/etc/audio/sku_cape/audio_effects.conf \
     $(LOCAL_PATH)/configs/audio/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/sku_cape/audio_effects.xml \
