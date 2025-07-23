@@ -17,7 +17,7 @@ $(call inherit-product, device/lenovo/asphalt/device.mk)
 PRODUCT_DEVICE := asphalt
 PRODUCT_NAME := lineage_asphalt
 PRODUCT_BRAND := lenovo
-PRODUCT_MODEL := Legion Y700 (2nd gen)
+PRODUCT_MODEL := TB320FC
 PRODUCT_MANUFACTURER := lenovo
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
