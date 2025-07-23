@@ -1,0 +1,79 @@
+
+on fs
+    mkdir /mnt/vendor/persist/audio 0777 audio audio
+
+on boot
+    chmod 0666 /sys/class/leds/vibrator_l/activate
+    chmod 0666 /sys/class/leds/vibrator_l/activate_mode
+    chmod 0666 /sys/class/leds/vibrator_l/index
+    chmod 0666 /sys/class/leds/vibrator_l/duration
+    chmod 0666 /sys/class/leds/vibrator_l/gain
+    chmod 0666 /sys/class/leds/vibrator_l/double
+    chmod 0666 /sys/class/leds/vibrator_r/activate
+    chmod 0666 /sys/class/leds/vibrator_r/activate_mode
+    chmod 0666 /sys/class/leds/vibrator_r/index
+    chmod 0666 /sys/class/leds/vibrator_r/duration
+    chmod 0666 /sys/class/leds/vibrator_r/gain
+    chmod 0666 /sys/class/leds/vibrator_r/double
+    chmod 0666 /sys/class/leds/vibrator_r/dual_duration
+    chmod 0666 /sys/class/leds/vibrator_r/dual_index
+    chmod 0666 /sys/class/leds/vibrator_r/dual_activate
+    chmod 0444 /proc/cmdline
+    chmod 0664 /sys/class/kgsl/kgsl-3d0/devfreq/cur_freq
+    chmod 0664 /sys/class/kgsl/kgsl-3d0/devfreq/max_freq
+
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chown system system /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
+    chmod 666 /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
+    chown system system /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
+    chmod 666 /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
+    chown system system /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
+    chmod 666 /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
+    chmod 666 /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
+    chown system system /sys/devices/system/cpu/cpu5/cpufreq/scaling_governor
+    chmod 666 /sys/devices/system/cpu/cpu5/cpufreq/scaling_governor
+    chown system system /sys/devices/system/cpu/cpu6/cpufreq/scaling_governor
+    chmod 666 /sys/devices/system/cpu/cpu6/cpufreq/scaling_governor
+    chown system system /sys/devices/system/cpu/cpu7/cpufreq/scaling_governor
+    chmod 666 /sys/devices/system/cpu/cpu7/cpufreq/scaling_governor
+
+    #Create folder of camera
+    mkdir /data/vendor/camera 0777 system system
+    write /data/vendor/camera/Capture3AData.dat 0
+    chown system system /data/vendor/camera/Capture3AData.dat
+    chmod 0777 /data/vendor/camera/Capture3AData.dat
+
+on property:vendor.charge.limit=1
+    write /sys/class/qcom-battery/batt_charge_en 0
+	
+on property:vendor.charge.limit=0
+    write /sys/class/qcom-battery/batt_charge_en 1
+
+#add for online lenovocust
+on post-fs-data
+    chown system system /lenovocust
+    chmod 0777 /lenovocust
+
+on early-init
+    mkdir /lenovocust 0777 system system
+
+on fs
+    wait /dev/block/bootdevice/by-name/lenovocust
+    mount ext4 /dev/block/bootdevice/by-name/lenovocust /lenovocust nosuid nodev barrier=1
+    restorecon_recursive   /lenovocust
+
+# Add for mic1 to speaker loopback test
+service tinyhostless_loop /vendor/bin/agmhostless -D 100 -P 103 -C 104 -p 1024 -n 4 -c 1 -r 48000 -T 200   -i 1 -o 2
+    user root
+    group root audio system
+    disabled
+    oneshot
+
+# Add for camera XTS test
+on property:vendor.lenovocamera.packagename.cts=*
+    setprop vendor.camera.packagename.cts ${vendor.lenovocamera.packagename.cts}
+
+on property:vendor.lenovocamera.packagename.zui=*
+    setprop vendor.camera.packagename.zui ${vendor.lenovocamera.packagename.zui}
