@@ -5,6 +5,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+TARGET_IS_ASPHALT := true
+
 # Inherit from sm8475-common
 $(call inherit-product, device/lenovo/sm8475-common/common.mk)
 
