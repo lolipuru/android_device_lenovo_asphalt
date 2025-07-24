@@ -100,7 +100,11 @@ vendor/lib/rfsa/adsp/libvpp_vqa_networks
 vendor/lib/rfsa/adsp/libvpt_action_recognition
 
 # Audio
-vendor/lib64/libqtigefar.so
+vendor/etc/audio_cal.wav
+vendor/lib64/hw/audio.primary.taro.so;MODULE_SUFFIX=_vendor;DISABLE_CHECKELF
+vendor/lib64/libqtigefar.so;DISABLE_CHECKELF
+vendor/lib64/vendor.qti.hardware.pal@1.0.so;MODULE_SUFFIX=_vendor;MAKE_COPY_RULE
+vendor/lib64/vendor.qti.hardware.pal@1.0-impl.so;DISABLE_CHECKELF;MODULE_SUFFIX=_vendor;MAKE_COPY_RULE
 
 # Audio (Configs)
 vendor/etc/media_profiles_cape.xml

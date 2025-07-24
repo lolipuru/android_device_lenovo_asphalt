@@ -31,6 +31,8 @@ lib_fixups: lib_fixups_user_type = {
     **lib_fixups,
     (
         'libar-pal',
+        'vendor.qti.hardware.pal@1.0',
+        'vendor.qti.hardware.pal@1.0-impl'
     ): lib_fixup_remove,
 }
 
