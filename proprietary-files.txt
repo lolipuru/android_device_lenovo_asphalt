@@ -397,6 +397,9 @@ vendor/lib64/libhdr_stub.so
 # Display
 vendor/etc/display/qdcm_calib_data_nt36523n_lcd_video_mode_dsi_tcl_panel_with_DSC.json
 
+# Drm
+vendor/lib64/liboemcrypto.so
+
 # EVA firmware
 vendor/firmware/evass-lt-21.b00
 vendor/firmware/evass-lt-21.b01
