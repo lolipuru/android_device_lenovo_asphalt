@@ -825,7 +825,6 @@ vendor/lib64/libaacvibrator.so
 vendor/lib64/libqtivibratoreffect.so
 vendor/lib64/vendor.aac.hardware.richtap.vibrator-V1-ndk_platform.so
 vendor/lib64/vendor.qti.hardware.vibrator.impl.so
-vendor/lib64/vendor.qti.hardware.vibrator_dual.device@1.0.so
 
 # VPU Firmware
 vendor/firmware/venus.mbn
