@@ -118,7 +118,6 @@ int main(void) {
 
     // Polling loop
     while (ALooper_pollOnce(-1, NULL, NULL, NULL) > ALOOPER_POLL_TIMEOUT) {
-        int eventCount = 0;
         ASensorEvent sensorEvent;
         while (ASensorEventQueue_getEvents(eventQueue, &sensorEvent, 1) > 0) {
             // 0 means closed; 1 means open
@@ -144,12 +143,6 @@ int main(void) {
             }
 
             ALOGI("Sent lid %s event", isClosed ? "closed" : "open");
-            eventCount++;
-        }
-
-        if (eventCount == 0) {
-            ALOGE("Poll returned with zero events: %s", strerror(errno));
-            break;
         }
     }
 
