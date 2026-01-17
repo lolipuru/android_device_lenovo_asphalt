@@ -825,6 +825,9 @@ vendor/lib64/libaacvibrator.so
 vendor/lib64/libqtivibratoreffect.so
 vendor/lib64/vendor.aac.hardware.richtap.vibrator-V1-ndk_platform.so
 vendor/lib64/vendor.qti.hardware.vibrator.impl.so
+vendor/lib64/android.hardware.vibrator@1.0.so
+vendor/lib64/android.hardware.vibrator@1.1.so
+vendor/lib64/android.hardware.vibrator@1.2.so
 
 # VPU Firmware
 vendor/firmware/venus.mbn
