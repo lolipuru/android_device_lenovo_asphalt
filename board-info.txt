@@ -1,1 +1,1 @@
-require board=taro|asphalt_prc|asphalt_nec|TB320FC
+require board=taro|asphalt|asphalt_prc|asphalt_nec|TB320FC
