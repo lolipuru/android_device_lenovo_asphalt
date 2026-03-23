@@ -815,7 +815,6 @@ vendor/firmware/novatek_ts_ultra_mp.bin
 # Vibrator
 odm/etc/aac_richtap_l.config
 odm/etc/aac_richtap_r.config
-vendor/lib64/libaacvibrator.so
 
 # VPU Firmware
 vendor/firmware/venus.mbn
