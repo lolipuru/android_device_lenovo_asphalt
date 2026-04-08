@@ -39,6 +39,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     LenovoParts
 
+# Sensors
+PRODUCT_PACKAGES += \
+    folio-daemon
+
 # Keylayout
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/keylayout/Vendor_17ef_Product_617f.idc:$(TARGET_COPY_OUT_VENDOR)/usr/idc/Vendor_17ef_Product_617f.idc \
