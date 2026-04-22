@@ -17,9 +17,6 @@ debug.sf.late.sf.duration=10500000
 vendor.display.idle_time=0
 debug.sf.enable_hwc_vds=0
 
-# Dolby
-ro.vendor.dolby.dax.version=DAX3_3.13.0.9_r1
-
 # DRM
 drm.service.enabled=true
 

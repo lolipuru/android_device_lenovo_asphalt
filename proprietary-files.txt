@@ -596,45 +596,6 @@ vendor/firmware/haptic_rtp_lighthouse.bin
 vendor/firmware/haptic_rtp_osc_24K_5s.bin
 vendor/firmware/haptic_rtp_silk.bin
 
-# Media (Dolby)
-vendor/bin/hw/dolbycodec2
-vendor/etc/dolby_vision.cfg
-vendor/lib64/c2.dolby.client.so
-vendor/lib64/c2.dolby.hevc.dec.so
-vendor/lib64/c2.dolby.hevc.sec.dec.so
-vendor/lib64/c2.dolby.store.so
-vendor/lib64/libdolbyottcameracontrol.so
-
-# Media (Dolby Audio)
-vendor/bin/hw/dvs-hal-service
-vendor/bin/hw/vendor.dolby.hardware.dms@2.0-service
-vendor/bin/hw/vendor.dolby.media.c2-default-service-dax
-vendor/etc/dolby/dax-default.xml
-vendor/etc/init/vendor.dolby.hardware.dms@2.0-service.rc
-vendor/etc/init/vendor.dolby.media.c2@1.0-service.rc
-vendor/etc/init/vendor.dolby.media.c2@1.0-vision-service.rc
-vendor/etc/init/vendor.dolby.media.dvs-service.rc
-vendor/etc/vintf/manifest/vendor.dolby.hardware.dms.xml
-vendor/etc/vintf/manifest/vendor.dolby.media.dvs-service.xml
-vendor/lib/libdmshal.so
-vendor/lib/libdapparamstorage.so
-vendor/lib/vendor.dolby.hardware.dms@2.0.so
-vendor/lib64/soundfx/libdlbvol.so
-vendor/lib64/soundfx/libswdap.so
-vendor/lib64/soundfx/libswgamedap.so
-vendor/lib64/libDecoderProcessor.so
-vendor/lib64/libcodec2_soft_ac4dec.so
-vendor/lib64/libcodec2_soft_ddpdec.so
-vendor/lib64/libcodec2_store_dolby.so
-vendor/lib64/libdapparamstorage.so
-vendor/lib64/libdeccfg.so
-vendor/lib64/libdlbdsservice.so
-vendor/lib64/libdlbpreg.so
-vendor/lib64/libdmshal.so
-vendor/lib64/libeglcore.so
-vendor/lib64/vendor.dolby.dvs@1.0.so
-vendor/lib64/vendor.dolby.hardware.dms@2.0.so
-
 # RIL
 product/app/uimgbaservice/uimgbaservice.apk
 product/etc/permissions/UimService.xml
