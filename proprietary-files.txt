@@ -1,4 +1,4 @@
-# Unpinned blobs from halo (L71091_CN_SECURE_USER_Q00031.0_T_ZUI_15.0.375_ST_240403)
+# Unpinned blobs from asphalt (TB320FC_ROW_OPEN_USER_Q00031.0_V_ZUI_17.0.339_ST_251219)
 
 # ACDB
 vendor/etc/acdbdata/nn_ns_models/fai__2.0.0_0.1__3.0.0_0.0__eai_1.36_enpu2.pmd
