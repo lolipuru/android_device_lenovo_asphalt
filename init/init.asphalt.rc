@@ -45,11 +45,10 @@ on boot
     chown system system /data/vendor/camera/Capture3AData.dat
     chmod 0777 /data/vendor/camera/Capture3AData.dat
 
-on property:vendor.charge.limit=1
-    write /sys/class/qcom-battery/batt_charge_en 0
-	
-on property:vendor.charge.limit=0
-    write /sys/class/qcom-battery/batt_charge_en 1
+# Battery
+on property:sys.boot_completed=1
+    chown system system /sys/class/qcom-battery/batt_protect_en
+    chmod 666 /sys/class/qcom-battery/batt_protect_en
 
 #add for online lenovocust
 on post-fs-data
