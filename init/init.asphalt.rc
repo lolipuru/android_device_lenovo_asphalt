@@ -71,12 +71,10 @@ service tinyhostless_loop /vendor/bin/agmhostless -D 100 -P 103 -C 104 -p 1024 -
     disabled
     oneshot
 
-# Add for camera XTS test
-on property:vendor.lenovocamera.packagename.cts=*
-    setprop vendor.camera.packagename.cts ${vendor.lenovocamera.packagename.cts}
-
-on property:vendor.lenovocamera.packagename.zui=*
-    setprop vendor.camera.packagename.zui ${vendor.lenovocamera.packagename.zui}
+# Spoof lenovo camera XTS test
+on boot
+    setprop vendor.camera.packagename.zui 1
+    setprop vendor.camera.packagename.cts 0
 
 on late-fs
     chmod 0666 /dev/aw8697_haptic_r
