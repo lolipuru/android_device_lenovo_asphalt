@@ -384,12 +384,6 @@ vendor/firmware/CAMERA_ICP.elf
 vendor/firmware/CAMERA_ICP.mbn
 vendor/firmware/CAMERA_ICP.mdt
 
-# Display (Composer)
-vendor/bin/hw/vendor.qti.hardware.display.composer-service
-vendor/lib64/libsdedrm.so
-vendor/lib64/libsdmcore.so
-vendor/lib64/libsdmutils.so
-
 # Display (HDR)
 vendor/lib64/libhdr10plus.so
 vendor/lib64/libhdr_stub.so
