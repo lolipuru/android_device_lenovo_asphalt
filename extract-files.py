@@ -53,6 +53,11 @@ blob_fixups: blob_fixups_user_type = {
             'android.hardware.vibrator-V2-ndk_platform.so',
             'android.hardware.vibrator-V2-ndk.so',
         ),
+    (
+        'vendor/lib64/libsnapdragoncolor-manager.so',
+        'vendor/lib64/libdpps.so',
+    ): blob_fixup()
+        .replace_needed('libtinyxml2.so', 'libtinyxml2_1.so'),
 }
 
 module = ExtractUtilsModule(
