@@ -129,7 +129,6 @@ nb7vpq904m.ko
 atmel_mxt_ts.ko
 synaptics_dsx.ko
 leds_bkl.ko
-nt36523-spi.ko
 pm8941-pwrkey.ko
 haptic.ko
 i2c-msm-geni.ko

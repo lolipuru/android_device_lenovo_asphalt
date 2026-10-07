@@ -823,6 +823,13 @@ vendor/firmware/novatek_ts_mp.bin
 vendor/firmware/novatek_ts_ultra_fw.bin
 vendor/firmware/novatek_ts_ultra_mp.bin
 
+# Touchscreen (rec)
+vendor/firmware/novatek_spi_fw.bin:recovery/root/lib/firmware/novatek_spi_fw.bin
+vendor/firmware/novatek_ts_fw.bin:recovery/root/lib/firmware/novatek_ts_fw.bin
+vendor/firmware/novatek_ts_mp.bin:recovery/root/lib/firmware/novatek_ts_mp.bin
+vendor/firmware/novatek_ts_ultra_fw.bin:recovery/root/lib/firmware/novatek_ts_ultra_fw.bin
+vendor/firmware/novatek_ts_ultra_mp.bin:recovery/root/lib/firmware/novatek_ts_ultra_mp.bin
+
 # Vibrator
 odm/etc/aac_richtap_l.config
 odm/etc/aac_richtap_r.config
