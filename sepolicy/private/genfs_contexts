@@ -1,1 +1,5 @@
 genfscon proc /support_pen u:object_r:proc_pen:s0
+genfscon proc /game_mode u:object_r:proc_pen:s0
+genfscon proc /panel_direction u:object_r:proc_pen:s0
+genfscon proc /gesture_control u:object_r:proc_pen:s0
+genfscon proc /edge_grid_zone u:object_r:proc_pen:s0
