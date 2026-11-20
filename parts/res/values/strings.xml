@@ -11,7 +11,36 @@
     <!-- Lenovo Stylus -->
     <string name="stylus_title">Stylus</string>
     <string name="stylus_switch_title">Force recognize stylus</string>
-    <string name="stylus_switch_summary">Enable this settings to assuming a compatible pen is connected</string>
+    <string name="stylus_switch_summary">Enable this setting to assume a compatible pen is connected</string>
+    <string name="auto_panel_direction_title">Rotation edge rejection</string>
+    <string name="auto_panel_direction_summary">Automatically update touchscreen panel orientation when rotating</string>
+
+    <!-- Palm Rejection -->
+    <string name="palm_rejection_category">Palm rejection</string>
+    <string name="palm_rejection_mode_title">Palm rejection mode</string>
+    <string name="palm_rejection_mode_off">Disabled</string>
+    <string name="palm_rejection_mode_follow_pen">When stylus is active</string>
+    <string name="palm_rejection_mode_app_based">select apps</string>
+
+    <string-array name="palm_rejection_mode_entries">
+        <item>@string/palm_rejection_mode_off</item>
+        <item>@string/palm_rejection_mode_follow_pen</item>
+        <item>@string/palm_rejection_mode_app_based</item>
+    </string-array>
+
+    <string-array name="palm_rejection_mode_values">
+        <item>off</item>
+        <item>follow_pen</item>
+        <item>app_based</item>
+    </string-array>
+
+    <string name="palm_rejection_pen_apps_title">Pen apps</string>
+    <string name="palm_rejection_game_apps_title">Game apps</string>
+    <plurals name="palm_rejection_apps_summary">
+        <item quantity="zero">No apps selected</item>
+        <item quantity="one">%d app selected</item>
+        <item quantity="other">%d apps selected</item>
+    </plurals>
 
     <!-- Charging Control -->
     <string name="bypass_qs_tile">Bypass Charging</string>
