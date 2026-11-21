@@ -23,6 +23,7 @@ import android.os.Looper
 import android.os.RemoteException
 import android.util.Log
 import android.view.Display
+import android.view.InputDevice
 import android.view.InputEvent
 import android.view.InputEventReceiver
 import android.view.InputMonitor
@@ -322,8 +323,7 @@ class PenUtilsService : Service() {
 
     private fun isDeviceLenovoPen(id: Int): Boolean {
         val inputDevice = inputManager.getInputDevice(id) ?: return false
-        return inputDevice.vendorId == LENOVO_PEN_VENDOR_ID &&
-            inputDevice.productId == LENOVO_PEN_PRODUCT_ID
+        return isLenovoBluetoothPen(inputDevice)
     }
 
     companion object {
@@ -337,7 +337,10 @@ class PenUtilsService : Service() {
         private const val STYLUS_REFRESH_RATE_HZ = 120f
         private const val STYLUS_REFRESH_HOLD_MS = 3_000L
 
-        private const val LENOVO_PEN_VENDOR_ID = 6127
-        private const val LENOVO_PEN_PRODUCT_ID = 24959
+        private const val LENOVO_PEN_VENDOR_ID = 0x17ef
+        private const val LENOVO_PEN_PRODUCT_ID = 0x617f
+
+        internal fun isLenovoBluetoothPen(device: InputDevice): Boolean =
+            device.vendorId == LENOVO_PEN_VENDOR_ID && device.productId == LENOVO_PEN_PRODUCT_ID
     }
 }

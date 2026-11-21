@@ -4,6 +4,10 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <global_keys version="1">
-    <key keyCode="PEN_DETECTION_KEYCODE"
+    <key keyCode="KEYCODE_MACRO_3"
          component="com.lenovo.settings/.peripheral.PenDetectionReceiver" />
+    <key keyCode="KEYCODE_MACRO_1"
+         component="com.lenovo.settings/.peripheral.PenButtonReceiver" />
+    <key keyCode="KEYCODE_MACRO_2"
+         component="com.lenovo.settings/.peripheral.PenButtonReceiver" />
 </global_keys>

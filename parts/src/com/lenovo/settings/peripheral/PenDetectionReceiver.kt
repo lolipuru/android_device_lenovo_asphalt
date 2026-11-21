@@ -25,7 +25,7 @@ class PenDetectionReceiver : BroadcastReceiver() {
 
     companion object {
         // Android's key layout and global key overlay use this platform key code.
-        private const val PEN_DETECTION_KEYCODE = KeyEvent.PEN_DETECTION_KEYCODE
+        private const val PEN_DETECTION_KEYCODE = KeyEvent.KEYCODE_MACRO_3
         private const val PEN_DETECTION_SCAN_CODE = 249
         private const val TOUCHSCREEN_NAME = "NVTCapacitiveTouchScreen"
     }

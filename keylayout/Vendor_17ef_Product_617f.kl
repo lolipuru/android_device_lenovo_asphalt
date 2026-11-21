@@ -1,7 +1,8 @@
-key usage 0x0c0600   PEN_ONE_CLICK
-key usage 0x0c0601   PEN_TWO_CLICK
-key usage 0x0c0602   PEN_THREE_CLICK
-key usage 0x0c0603   PEN_LONG_CLICK
-key usage 0x0c0604   PEN_PRESS_CLICK
-key usage 0x0c0605   PEN_BT_DISCONNECT
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+
+# Route single and double clicks to Lenovo Parts. Use Android's screenshot key for long press.
+key usage 0x0c0600 MACRO_1
+key usage 0x0c0601 MACRO_2
+key usage 0x0c0603 SCREENSHOT
 
