@@ -17,30 +17,12 @@
 
     <!-- Palm Rejection -->
     <string name="palm_rejection_category">Palm rejection</string>
-    <string name="palm_rejection_mode_title">Palm rejection mode</string>
-    <string name="palm_rejection_mode_off">Disabled</string>
-    <string name="palm_rejection_mode_follow_pen">When stylus is active</string>
-    <string name="palm_rejection_mode_app_based">select apps</string>
-
-    <string-array name="palm_rejection_mode_entries">
-        <item>@string/palm_rejection_mode_off</item>
-        <item>@string/palm_rejection_mode_follow_pen</item>
-        <item>@string/palm_rejection_mode_app_based</item>
-    </string-array>
-
-    <string-array name="palm_rejection_mode_values">
-        <item>off</item>
-        <item>follow_pen</item>
-        <item>app_based</item>
-    </string-array>
-
-    <string name="palm_rejection_pen_apps_title">Pen apps</string>
-    <string name="palm_rejection_game_apps_title">Game apps</string>
-    <plurals name="palm_rejection_apps_summary">
-        <item quantity="zero">No apps selected</item>
-        <item quantity="one">%d app selected</item>
-        <item quantity="other">%d apps selected</item>
-    </plurals>
+    <string name="palm_rejection_app_profiles_title">App profiles</string>
+    <string name="palm_rejection_app_profiles_summary">Choose touch filtering for each app</string>
+    <string name="palm_rejection_profile_default">Default</string>
+    <string name="palm_rejection_profile_pen">Pen · Enhanced palm rejection</string>
+    <string name="palm_rejection_profile_game">Game · Palm rejection off</string>
+    <string name="palm_rejection_no_apps">No apps available</string>
 
     <!-- Charging Control -->
     <string name="bypass_qs_tile">Bypass Charging</string>

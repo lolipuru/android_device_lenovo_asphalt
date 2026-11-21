@@ -8,13 +8,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/stylus_title">
 
-    <SwitchPreference
+    <SwitchPreferenceCompat
         android:key="stylus_switch_key"
         android:defaultValue="false"
         android:title="@string/stylus_switch_title"
         android:summary="@string/stylus_switch_summary"/>
 
-    <SwitchPreference
+    <SwitchPreferenceCompat
         android:key="auto_panel_direction_key"
         android:defaultValue="true"
         android:title="@string/auto_panel_direction_title"
@@ -23,22 +23,10 @@
     <PreferenceCategory
         android:title="@string/palm_rejection_category">
 
-        <ListPreference
-            android:key="palm_rejection_mode_key"
-            android:defaultValue="app_based"
-            android:title="@string/palm_rejection_mode_title"
-            android:entries="@array/palm_rejection_mode_entries"
-            android:entryValues="@array/palm_rejection_mode_values"/>
-
-        <MultiSelectListPreference
-            android:key="palm_rejection_pen_apps_key"
-            android:title="@string/palm_rejection_pen_apps_title"
-            android:dialogTitle="@string/palm_rejection_pen_apps_title"/>
-
-        <MultiSelectListPreference
-            android:key="palm_rejection_game_apps_key"
-            android:title="@string/palm_rejection_game_apps_title"
-            android:dialogTitle="@string/palm_rejection_game_apps_title"/>
+        <Preference
+            android:key="palm_rejection_app_profiles"
+            android:title="@string/palm_rejection_app_profiles_title"
+            android:summary="@string/palm_rejection_app_profiles_summary"/>
 
     </PreferenceCategory>
 

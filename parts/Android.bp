@@ -8,7 +8,7 @@ android_app {
     certificate: "platform",
     srcs: [
         "src/**/*.java",
-        "src/**/*.kt", 
+        "src/**/*.kt",
     ],
     platform_apis: true,
     privileged: true,
@@ -16,5 +16,6 @@ android_app {
     static_libs: [
         "androidx.core_core",
         "SettingsLib",
+        "SettingsLibSettingsTheme",
     ],
 }

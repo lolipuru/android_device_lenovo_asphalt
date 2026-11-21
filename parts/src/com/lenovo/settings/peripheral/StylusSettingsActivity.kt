@@ -10,17 +10,28 @@ import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
 
 class StylusSettingsActivity : CollapsingToolbarBaseActivity() {
 
-    @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        fragmentManager.beginTransaction()
+        if (savedInstanceState != null) return
+
+        supportFragmentManager.beginTransaction()
             .replace(
                 com.android.settingslib.collapsingtoolbar.R.id.content_frame,
                 StylusSettingsFragment(),
                 TAG_STYLUS
             )
             .commit()
+    }
+
+    override fun onNavigateUp(): Boolean {
+        if (supportFragmentManager.popBackStackImmediate()) return true
+        return super.onNavigateUp()
+    }
+
+    @Suppress("DEPRECATION", "OVERRIDE_DEPRECATION")
+    override fun onBackPressed() {
+        if (!supportFragmentManager.popBackStackImmediate()) super.onBackPressed()
     }
 
     companion object {

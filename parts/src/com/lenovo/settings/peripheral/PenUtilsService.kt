@@ -23,8 +23,13 @@ import android.os.Looper
 import android.os.RemoteException
 import android.util.Log
 import android.view.Display
+import android.view.InputEvent
+import android.view.InputEventReceiver
+import android.view.InputMonitor
+import android.view.MotionEvent
 import android.view.Surface
 import androidx.preference.PreferenceManager
+import kotlin.math.abs
 
 class PenUtilsService : Service() {
 
@@ -33,9 +38,8 @@ class PenUtilsService : Service() {
     private var isPenModeEnabled = false
     private var isPenModeForced = false
     private var isAutoPanelDirection = true
-    private var palmRejectionMode = PALM_MODE_APP_BASED
-    private var penApps: Set<String> = emptySet()
-    private var gameApps: Set<String> = emptySet()
+    private var isPenRefreshRateRequested = false
+    private val activeStylusDevices = mutableSetOf<Int>()
     private var topPackageName: String? = null
 
     private lateinit var inputManager: InputManager
@@ -43,9 +47,19 @@ class PenUtilsService : Service() {
     private lateinit var activityManager: ActivityManager
     private lateinit var sharedPrefs: SharedPreferences
 
+    private var inputMonitor: InputMonitor? = null
+    private var inputEventReceiver: InputEventReceiver? = null
+
+    private val releasePenRefreshRate = Runnable {
+        setPenRefreshRateRequested(false)
+    }
+
     private val inputDeviceListener = object : InputDeviceListener {
         override fun onInputDeviceAdded(id: Int) = refreshPenMode()
-        override fun onInputDeviceRemoved(id: Int) = refreshPenMode()
+        override fun onInputDeviceRemoved(id: Int) {
+            endStylusInteraction(id)
+            refreshPenMode()
+        }
         override fun onInputDeviceChanged(id: Int) = refreshPenMode()
     }
 
@@ -54,10 +68,16 @@ class PenUtilsService : Service() {
             if (displayId == Display.DEFAULT_DISPLAY) refreshPanelDirection()
         }
 
-        override fun onDisplayRemoved(displayId: Int) {}
+        override fun onDisplayRemoved(displayId: Int) {
+            if (displayId == Display.DEFAULT_DISPLAY) resetStylusInteraction()
+        }
 
         override fun onDisplayChanged(displayId: Int) {
-            if (displayId == Display.DEFAULT_DISPLAY) refreshPanelDirection()
+            if (displayId != Display.DEFAULT_DISPLAY) return
+            if (displayManager.getDisplay(displayId)?.state != Display.STATE_ON) {
+                resetStylusInteraction()
+            }
+            refreshPanelDirection()
         }
     }
 
@@ -77,11 +97,10 @@ class PenUtilsService : Service() {
                 isAutoPanelDirection = sharedPrefs.getBoolean(AUTO_PANEL_DIRECTION_KEY, true)
                 refreshPanelDirection()
             }
-            PALM_REJECTION_MODE_KEY,
-            PALM_REJECTION_PEN_APPS_KEY,
-            PALM_REJECTION_GAME_APPS_KEY -> {
-                loadPalmPrefs()
-                refreshGameMode()
+            else -> {
+                if (key?.startsWith(PalmRejectionProfiles.APP_KEY_PREFIX) == true) {
+                    refreshGameMode()
+                }
             }
         }
     }
@@ -91,11 +110,11 @@ class PenUtilsService : Service() {
         if (DEBUG) Log.d(TAG, "Creating service")
 
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
+        PalmRejectionProfiles.migrate(sharedPrefs)
         sharedPrefs.registerOnSharedPreferenceChangeListener(sharedPrefsListener)
 
         isPenModeForced = sharedPrefs.getBoolean(STYLUS_KEY, false)
         isAutoPanelDirection = sharedPrefs.getBoolean(AUTO_PANEL_DIRECTION_KEY, true)
-        loadPalmPrefs()
 
         inputManager = getSystemService(Context.INPUT_SERVICE) as InputManager
         inputManager.registerInputDeviceListener(inputDeviceListener, mainHandler)
@@ -110,9 +129,15 @@ class PenUtilsService : Service() {
         } catch (e: RemoteException) {
             Log.e(TAG, "Failed to register TaskStackListener", e)
         }
+
+        startStylusMonitor()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (intent?.action == ACTION_PEN_DETECTED) {
+            onPenDetected()
+            return START_STICKY
+        }
         if (DEBUG) Log.d(TAG, "onStartCommand")
         refreshPenMode()
         refreshPanelDirection()
@@ -130,17 +155,127 @@ class PenUtilsService : Service() {
         } catch (e: RemoteException) {
             Log.w(TAG, "Failed to unregister TaskStackListener", e)
         }
+        stopStylusMonitor()
         mainHandler.removeCallbacksAndMessages(null)
         super.onDestroy()
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
-    private fun loadPalmPrefs() {
-        palmRejectionMode = sharedPrefs.getString(PALM_REJECTION_MODE_KEY, PALM_MODE_APP_BASED)
-            ?: PALM_MODE_APP_BASED
-        penApps = sharedPrefs.getStringSet(PALM_REJECTION_PEN_APPS_KEY, emptySet()) ?: emptySet()
-        gameApps = sharedPrefs.getStringSet(PALM_REJECTION_GAME_APPS_KEY, emptySet()) ?: emptySet()
+    @Suppress("DEPRECATION")
+    private fun startStylusMonitor() {
+        try {
+            val monitor = inputManager.monitorGestureInput(
+                "LenovoPartsStylusMonitor",
+                Display.DEFAULT_DISPLAY
+            )
+            inputMonitor = monitor
+            inputEventReceiver =
+                object : InputEventReceiver(monitor.inputChannel, mainHandler.looper) {
+                    override fun onInputEvent(event: InputEvent) {
+                        try {
+                            if (event is MotionEvent) handleStylusMotion(event)
+                        } finally {
+                            finishInputEvent(event, false)
+                        }
+                    }
+                }
+        } catch (e: RuntimeException) {
+            Log.e(TAG, "Failed to start stylus InputMonitor", e)
+            stopStylusMonitor()
+        }
+    }
+
+    private fun stopStylusMonitor() {
+        resetStylusInteraction()
+        inputEventReceiver?.dispose()
+        inputEventReceiver = null
+        inputMonitor?.dispose()
+        inputMonitor = null
+    }
+
+    private fun handleStylusMotion(event: MotionEvent) {
+        val action = event.actionMasked
+        val deviceId = event.deviceId
+        when (action) {
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_HOVER_EXIT, MotionEvent.ACTION_CANCEL -> {
+                endStylusInteraction(deviceId)
+                return
+            }
+            MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE, MotionEvent.ACTION_POINTER_DOWN,
+            MotionEvent.ACTION_POINTER_UP, MotionEvent.ACTION_HOVER_ENTER,
+            MotionEvent.ACTION_HOVER_MOVE -> Unit
+            else -> return
+        }
+
+        val liftedPointer = if (action == MotionEvent.ACTION_POINTER_UP) event.actionIndex else -1
+        val hasStylus = (0 until event.pointerCount).any { index ->
+            if (index == liftedPointer) return@any false
+            val toolType = event.getToolType(index)
+            toolType == MotionEvent.TOOL_TYPE_STYLUS || toolType == MotionEvent.TOOL_TYPE_ERASER
+        }
+        if (!hasStylus) {
+            endStylusInteraction(deviceId)
+            return
+        }
+        if (isPenRefreshRateRequested && deviceId in activeStylusDevices) return
+
+        val display = displayManager.getDisplay(Display.DEFAULT_DISPLAY) ?: return
+        if (display.state != Display.STATE_ON) return
+
+        if (activeStylusDevices.add(deviceId)) {
+            mainHandler.removeCallbacks(releasePenRefreshRate)
+        }
+        requestPenRefreshRate(display)
+    }
+
+    private fun onPenDetected() {
+        val display = displayManager.getDisplay(Display.DEFAULT_DISPLAY) ?: return
+        if (display.state != Display.STATE_ON) return
+
+        requestPenRefreshRate(display)
+        if (isPenRefreshRateRequested && activeStylusDevices.isEmpty()) {
+            schedulePenRefreshRelease()
+        }
+    }
+
+    private fun requestPenRefreshRate(display: Display) {
+        if (isPenRefreshRateRequested) return
+
+        val modes = display.supportedModes
+        if (modes.any { abs(it.refreshRate - STYLUS_REFRESH_RATE_HZ) < 0.01f } &&
+            modes.any { it.refreshRate > STYLUS_REFRESH_RATE_HZ + 0.01f }
+        ) {
+            setPenRefreshRateRequested(true)
+        }
+    }
+
+    private fun endStylusInteraction(deviceId: Int) {
+        if (activeStylusDevices.remove(deviceId) && activeStylusDevices.isEmpty()) {
+            schedulePenRefreshRelease()
+        }
+    }
+
+    private fun schedulePenRefreshRelease() {
+        mainHandler.removeCallbacks(releasePenRefreshRate)
+        mainHandler.postDelayed(releasePenRefreshRate, STYLUS_REFRESH_HOLD_MS)
+    }
+
+    private fun resetStylusInteraction() {
+        activeStylusDevices.clear()
+        mainHandler.removeCallbacks(releasePenRefreshRate)
+        setPenRefreshRateRequested(false)
+    }
+
+    private fun setPenRefreshRateRequested(requested: Boolean) {
+        if (isPenRefreshRateRequested == requested) return
+        try {
+            val maxRefreshRate = if (requested) STYLUS_REFRESH_RATE_HZ else 0f
+            displayManager.requestMaxRefreshRate(Display.DEFAULT_DISPLAY, maxRefreshRate)
+            isPenRefreshRateRequested = requested
+        } catch (e: RuntimeException) {
+            Log.w(TAG, "Failed to update the stylus refresh rate request", e)
+        }
     }
 
     private fun refreshPenMode() {
@@ -151,15 +286,14 @@ class PenUtilsService : Service() {
             isPenModeEnabled = shouldEnable
             Log.d(TAG, "refreshPenMode: $isPenModeEnabled")
             PenNodeManager.setPenMode(isPenModeEnabled)
-            if (palmRejectionMode == PALM_MODE_FOLLOW_PEN) {
-                refreshGameMode()
-            }
         }
     }
 
     private fun refreshPanelDirection() {
         if (!isAutoPanelDirection) return
         val display = displayManager.getDisplay(Display.DEFAULT_DISPLAY) ?: return
+        // ZUI panel_direction: 0=portrait(cam top), 1=landscape(usb on user),
+        // 2=portrait(cam bottom), 3=landscape(usb opposite). Android ROTATION_90 -> 3.
         val direction = when (display.rotation) {
             Surface.ROTATION_0 -> 0
             Surface.ROTATION_90 -> 3
@@ -181,23 +315,8 @@ class PenUtilsService : Service() {
     }
 
     private fun refreshGameMode() {
-        val targetMode = when (palmRejectionMode) {
-            PALM_MODE_OFF -> PenNodeManager.GAME_MODE_NORMAL
-            PALM_MODE_FOLLOW_PEN -> {
-                if (isPenModeEnabled) PenNodeManager.GAME_MODE_PEN
-                else PenNodeManager.GAME_MODE_NORMAL
-            }
-            PALM_MODE_APP_BASED -> {
-                val pkg = topPackageName
-                when {
-                    pkg != null && gameApps.contains(pkg) -> PenNodeManager.GAME_MODE_GAME
-                    pkg != null && penApps.contains(pkg) -> PenNodeManager.GAME_MODE_PEN
-                    else -> PenNodeManager.GAME_MODE_NORMAL
-                }
-            }
-            else -> PenNodeManager.GAME_MODE_NORMAL
-        }
-        if (DEBUG) Log.d(TAG, "refreshGameMode: mode=$palmRejectionMode top=$topPackageName -> $targetMode")
+        val targetMode = PalmRejectionProfiles.gameModeFor(sharedPrefs, topPackageName)
+        if (DEBUG) Log.d(TAG, "refreshGameMode: top=$topPackageName -> $targetMode")
         PenNodeManager.setGameMode(targetMode)
     }
 
@@ -211,15 +330,12 @@ class PenUtilsService : Service() {
         private const val TAG = "LenovoPartsPenUtilsService"
         private const val DEBUG = false
 
+        const val ACTION_PEN_DETECTED = "com.lenovo.settings.action.PEN_DETECTED"
         const val STYLUS_KEY = "stylus_switch_key"
         const val AUTO_PANEL_DIRECTION_KEY = "auto_panel_direction_key"
-        const val PALM_REJECTION_MODE_KEY = "palm_rejection_mode_key"
-        const val PALM_REJECTION_PEN_APPS_KEY = "palm_rejection_pen_apps_key"
-        const val PALM_REJECTION_GAME_APPS_KEY = "palm_rejection_game_apps_key"
 
-        const val PALM_MODE_OFF = "off"
-        const val PALM_MODE_FOLLOW_PEN = "follow_pen"
-        const val PALM_MODE_APP_BASED = "app_based"
+        private const val STYLUS_REFRESH_RATE_HZ = 120f
+        private const val STYLUS_REFRESH_HOLD_MS = 3_000L
 
         private const val LENOVO_PEN_VENDOR_ID = 6127
         private const val LENOVO_PEN_PRODUCT_ID = 24959
